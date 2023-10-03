@@ -8,6 +8,7 @@ const path = require('path');
 const bcrypt = require("bcrypt");
 const { nanoid } = require("nanoid");
 const jwt = require("jsonwebtoken");
+require('dotenv').config()
 
 mongoose.set("strictQuery",false);
 app.use(cors());
@@ -53,8 +54,8 @@ const upload = multer({
     fileFilter: multerFilter,
   });
 
-const mongoDB = "mongodb+srv://cordonniercor:xEsTqdKuyurUYqJq@clustereventmaker.ixmvpkp.mongodb.net/EventManager";
-const port = 3000;
+const mongoDB = "mongodb+srv://"+process.env.DB_USER+":"+process.env.DB_PASSWORD+"@clustereventmaker.ixmvpkp.mongodb.net/EventManager";
+const port = 3001;
 
 let User = require("./models/user");
 let Event = require("./models/event");
