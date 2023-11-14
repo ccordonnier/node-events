@@ -167,24 +167,22 @@ app.get('/api/event/:id', (req, res, next) => {
  * Add a user 
  */
 app.post('/api/user/add', upload.single('avatar'),async (req, res, next) => {
-    var password = await bcrypt.hash(req.body.password, 10).then( hash => {
-        return hash;
-    }).catch(err => res.status(500).send({ error: err }));
-
-    let file = req.file;
-    if(!file) {
-        res.status(500).send({ error: "Format d'image non valide. Veuillez ajouter une image au format JPG, PNG ou webp." });
-    }
+    // let file = req.file;
+    // if(!file) {
+    //     res.status(500).send({ error: "Format d'image non valide. Veuillez ajouter une image au format JPG, PNG ou webp." });
+    // }
+    
     
     let userInfos = {
-        username : req.body.username,
-        mail : req.body.mail,
-        password : password,
+        username : req.body.email.substring(0,req.body.email.indexOf("@")),
+        email : req.body.email,
+        password : req.body.password,
         firstname : req.body.firstname,
         lastname : req.body.lastname,
-        role : "Creator",
-        avatar : file.filename,
+        role : [],
+        avatar : req.file?req.file.filename:"no-image.jpg",
         registration : new Date(),
+        birthdate : new Date(req.body.birthdate),
     }
 
     let user = new User(userInfos);
@@ -295,16 +293,16 @@ let createToken = (id) =>{
 };
 
 app.post('/api/login', async (req,res, next) => {
-    let {mail, password} = req.body;
+    let {email, password} = req.body;
      try {
-        let user =  await User.login(mail,password);
+        let user =  await User.login(email,password);
         let token = createToken(user._id);
         res.cookie('jwt', token, {httpOnly:true, maxAge});
         console.log("user_id",user._id);  
-        res.status(200).json({user: user._id});
+        res.status(200).json({user: {...user._doc, token:token}});
         
      } catch (err){
-         console.warn("corentin "+err.name,err.message);
+         console.warn("err generating jwt "+err.name,err.message);
          res.status(401).json({ message: err.message });
      }
 });
