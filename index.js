@@ -12,6 +12,7 @@ require('dotenv').config()
 const authRoute = require('./routes/auth');
 const usersRoute = require('./routes/users');
 const eventsRoute = require('./routes/events');
+const categoriesRoute = require('./routes/categories');
 
 mongoose.set("strictQuery",false);
 app.use(cors());
@@ -50,7 +51,6 @@ const hashCode = (str) => {
 // Wait for database to connect, logging an error if there is a problem
 main().catch((err) => console.log(err));
 async function main() {
-    console.log(process.env.DB_USER,process.env.DB_USER)
   await mongoose.connect(mongoDB,
     { useNewUrlParser: true,
       useUnifiedTopology: true 
@@ -62,6 +62,7 @@ async function main() {
 app.use('/api/users', usersRoute);
 app.use('/api/events', eventsRoute);
 app.use('/api/login', authRoute);
+app.use('/api/categories', categoriesRoute);
 
 // Listen to the server
 app.listen(port, () =>{

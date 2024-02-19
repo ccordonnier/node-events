@@ -1,6 +1,5 @@
 const Event = require('../models/event');
 
-
 /**
  * Get All Events
  **/
@@ -39,7 +38,6 @@ module.exports.add = (req, res) => {
         date:req.body.date,
         time:req.body.time,
         location:req.body.location,
-        // image:file?.filename,
         image:file?.filename,
         category:req.body.category,
         creator:"corentin cordonnier",
