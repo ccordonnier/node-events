@@ -27,7 +27,8 @@ module.exports.getOne = (req, res) => {
  * Add an event
  */
 module.exports.add = (req, res) => {
-    let file = req.file;
+    const file = req.file;
+    
     if(!file) {
         res.status(500).send({ error: "Format d'image non valide. Veuillez ajouter une image au format JPG, PNG ou webp." });
     }
@@ -47,7 +48,7 @@ module.exports.add = (req, res) => {
     }   
 
     let event = new Event(eventInfos);
-
+    console.log("event",event);
     event.save()
     .then(()=>{
         res.status(201).json({message: "L'évènement a bien été enregistré"})

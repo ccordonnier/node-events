@@ -1,5 +1,6 @@
 const multer = require('multer');
 const path = require('path');
+const { nanoid } = require("nanoid");
 
 const multerStorage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -32,7 +33,7 @@ const multerFilter = (req, file, cb) => {
             cb(null, true);
             break;
         default : 
-            cb(new Error("Not a PDF File!!"), false);
+            cb(new Error("Not a picture File!!"), false);
             break;
     }
 };
